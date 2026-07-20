@@ -101,7 +101,7 @@ rules:
 
 - RULE-SET,claude_classical,Anthropic
 - RULE-SET,kiro_classical,Anthropic
-- RULE-SET,cutto_classical,默认
+- RULE-SET,cutto_classical,直连
 - RULE-SET,biliintl_domain,哔哩东南亚
 - RULE-SET,ehentai_domain,ehentai
 - RULE-SET,github_domain,默认
