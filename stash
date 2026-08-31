@@ -89,6 +89,8 @@ proxy-groups:
 - {name: OpenAI自动选择, type: url-test, include-all: true, exclude-filter: "(?i)直连|港|hk|hongkong|hong kong", url: "https://chatgpt.com/backend-api/codex/responses", interval: 300, icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/mini/AIA.png"}
 
 rules:
+  - DOMAIN,desk.idbi.ltd,国内
+
   # Cutto
   - RULE-SET,overseas_custom_direct_classical,海外自定义直连组
   - RULE-SET,overseas_custom_proxy_classical,海外自定义代理组
