@@ -54,10 +54,12 @@ proxy-groups:
 - {name: 海外自定义直连组, type: select, proxies: [直连, 默认], icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/mini/AIA.png"}
 - {name: 海外自定义代理组, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/mini/AIA.png"}
 - {name: Google, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google_Search.png"}
+- {name: Google Analytics, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Google.png"}
 - {name: GoogleCloud, <<: *pr_ai, icon: "https://raw.githubusercontent.com/Koolson/Qure/refs/heads/master/IconSet/Dark/GCP.png"}
 - {name: Apple, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Apple.png"}
 - {name: Telegram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Telegram.png"}
 - {name: Twitter, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Twitter.png"}
+- {name: Instagram, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Instagram.png"}
 - {name: ehentai, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/Panda.png"}
 - {name: 哔哩哔哩, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/bilibili.png"}
 - {name: 哔哩东南亚, <<: *pr, icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/bilibili.png"}
@@ -100,6 +102,12 @@ rules:
   - RULE-SET,private_cr,直连
   - GEOSITE,private,直连
 
+  # Google Analytics 域名必须放在广告拦截规则之前
+  - DOMAIN-SUFFIX,google-analytics.com,Google Analytics
+  - DOMAIN-SUFFIX,analytics.google.com,Google Analytics
+  - DOMAIN-SUFFIX,googletagmanager.com,Google Analytics
+  - DOMAIN,stats.g.doubleclick.net,Google Analytics
+
   # 广告拦截（保留 reject_cr 为主要规则，GEOSITE 作为补充）
   - RULE-SET,reject_cr,REJECT
   - GEOSITE,category-ads-all,REJECT
@@ -140,6 +148,7 @@ rules:
   # ==================================================
   - GEOSITE,telegram,Telegram
   - GEOSITE,twitter,Twitter
+  - GEOSITE,instagram,Instagram
 
   # 视频、音乐和社区
   # ==================================================
