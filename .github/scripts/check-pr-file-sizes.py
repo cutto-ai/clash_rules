@@ -25,14 +25,19 @@ def git(*args, input_data=None):
 def object_paths(base, head):
     """Include all new historical blobs and paths changed in the final tree."""
     common = git("merge-base", base, head).strip().decode("ascii")
-    objects = {}
-    previous = None
-    for item in git("rev-list", "--objects", "-z", head, "--not", common).split(b"\0"):
-        if OID.fullmatch(item):
-            previous = item
-            objects.setdefault(item, set())
-        elif item.startswith(b"path=") and previous is not None:
-            objects[previous].add(item[5:])
+    # The NUL-delimited rev-list format is unavailable in older Git versions,
+    # even when they accept -z. Object IDs alone are always newline-delimited.
+    raw_ids = git("rev-list", "--objects", "--no-object-names", head, "--not", common)
+    ids = raw_ids.splitlines()
+    if any(not OID.fullmatch(oid) for oid in ids):
+        raise ValueError("Unexpected git rev-list object format")
+    objects = {oid: set() for oid in ids}
+    # Names are for diagnostics only. Never rely on them for enforcement: Git's
+    # legacy output can represent filenames with embedded newlines ambiguously.
+    for line in git("rev-list", "--objects", head, "--not", common).splitlines():
+        oid, separator, path = line.partition(b" ")
+        if separator and oid in objects and path:
+            objects[oid].add(path)
 
     # A newly added path can point to a pre-existing object in the base tree.
     current = []
