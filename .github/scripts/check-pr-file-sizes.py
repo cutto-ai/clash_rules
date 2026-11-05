@@ -44,7 +44,7 @@ def object_paths(base, head):
     parts = git("diff", "--raw", "-z", "--no-abbrev", "--no-renames", common, head).split(b"\0")
     for index in range(0, len(parts) - 1, 2):
         fields = parts[index].split()
-        if len(fields) == 5 and fields[4] != b"D" and OID.fullmatch(fields[3]):
+        if len(fields) == 5 and fields[1] != b"160000" and fields[4] != b"D" and OID.fullmatch(fields[3]):
             objects.setdefault(fields[3], set()).add(parts[index + 1])
             current.append(fields[3])
     return objects, current
