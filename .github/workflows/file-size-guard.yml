@@ -1,0 +1,26 @@
+name: File size guard
+
+on:
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  file-size-guard:
+    name: file-size-guard
+    runs-on: ubuntu-latest
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Check changed file sizes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha }}
+        run: python3 .github/scripts/check-pr-file-sizes.py "$BASE_SHA" "$HEAD_SHA"
